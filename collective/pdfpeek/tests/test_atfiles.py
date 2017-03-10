@@ -18,6 +18,7 @@ class TestATDataExtraction(TestCase):
     layer = testing.PDFPEEK_AT_INTEGRATION_TESTING
 
     def setUp(self):
+        super(TestATDataExtraction, self).setUp()
         self.portal = self.layer['portal']
 
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
@@ -26,6 +27,10 @@ class TestATDataExtraction(TestCase):
         # Create files
         for uri in self.layer['pdf_files']:
             content_id = uri.split('/').pop()
+            # TODO:
+            # Plone 5 doesn't allow to add content like this and
+            # raises an 'Unauthorized' exception.
+            # Using _createObjectByType doesn't work either.
             new_id = self.portal.invokeFactory('File', content_id)
 
             atfile = self.portal[new_id]
@@ -124,6 +129,23 @@ class TestATDataExtraction(TestCase):
 
     def test_limit_pages_through_registry(self):
         converter = IPDFDataExtractor(self.portal['distutils.pdf'])
+        converter.settings.page_limit = 1
+
+        self.assertEqual(converter.pages, 1)
+        self.assertEqual(converter.metadata, {
+            'height': 792.0,
+            'width': 612.0,
+            'pages': 98,
+        })
+
+        images = converter.get_thumbnails(0, converter.pages)
+        self.assertIsNotNone(images)
+        self.assertEqual(type(images), dict)
+        self.assertEqual(len(images.keys()), 1 * 2)  # 2 images each
+
+    def test_syncronous_creation(self):
+        converter = IPDFDataExtractor(self.portal['distutils.pdf'])
+        converter.settings.is_async = False
         converter.settings.page_limit = 1
 
         self.assertEqual(converter.pages, 1)

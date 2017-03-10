@@ -17,8 +17,7 @@ def test_suite():
                                       package='collective.pdfpeek',
                                       optionflags=testing.optionflags),
                  layer=testing.PDFPEEK_AT_INTEGRATION_TESTING)
-            for f in integration_tests]
-        +
+            for f in integration_tests] +
         [layered(doctest.DocFileSuite('tests/{0:s}'.format(f),
                                       package='collective.pdfpeek',
                                       optionflags=testing.optionflags),

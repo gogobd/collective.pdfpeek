@@ -11,7 +11,7 @@
     <plone:behavior
         title="PDF thumbnails and metadata"
         for="plone.dexterity.interfaces.IDexterityContent"
-        description="Generate asynchrounously thumbnails of pdf stored into primary field. "
+        description="Generate asynchrounously thumbnails of pdf stored into primary field."
         provides=".behaviors.IPDFDataExtractable"
         />
 
@@ -58,7 +58,7 @@
 
     <genericsetup:registerProfile
         name="dx"
-        title="collective.pdfpeek.dx"
+        title="PDFpeek for Dexterity"
         directory="profiles/default"
         description="Installs the Dexterity adapters and event handlers."
         provides="Products.GenericSetup.interfaces.EXTENSION"

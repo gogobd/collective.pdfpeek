@@ -5,6 +5,9 @@
 #        open-source under the GPL v2.1 (see LICENSE.txt)                #
 #                                                                        #
 ##########################################################################
+from Products.CMFPlone.interfaces import INonInstallable
+from zope.interface import implementer
+
 from Products.CMFCore.utils import getToolByName
 from collective.pdfpeek.async import IQueue
 from collective.pdfpeek.interfaces import IPDF
@@ -19,6 +22,18 @@ import logging
 import transaction
 
 logger = logging.getLogger('collective.pdfpeek.setuphandlers')
+
+
+@implementer(INonInstallable)
+class HiddenProfiles(object):
+    """Hidden Profiles."""
+
+    def getNonInstallableProfiles(self):
+        """Hide uninstall profile from site-creation and quickinstaller."""
+        return [
+            'collective.pdfpeek:default',
+            'collective.pdfpeek:plone'
+        ]
 
 
 def importVarious(context):

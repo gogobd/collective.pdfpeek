@@ -4,10 +4,10 @@
   <div id="thumbnails">
     <div id="triggers" class="items">
       <tal:block tal:repeat="page context/view-image-annotation/num_pages">
-    <tal:block tal:define="pagenum python:page + 1">
-      <img src="img.jpg"
-           tal:attributes="src string:${context/absolute_url}/++images++${pagenum}_thumb" />
-    </tal:block>
+        <tal:block tal:define="pagenum python:page + 1">
+          <img src="img.jpg"
+               tal:attributes="src string:${context/absolute_url}/++images++${pagenum}_thumb" />
+        </tal:block>
       </tal:block>
     </div>
   </div>

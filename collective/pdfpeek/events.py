@@ -33,14 +33,20 @@ def queue_document_conversion(content, event):
         queue_image_removal(content)
         return
 
-    # get the queue
-    portal = api.portal.get()
-    conversion_queue = get_queue('collective.pdfpeek.conversion_' + portal.id)
-    # create a converter job
-    converter_job = Job(handle_pdf, content)
-    # add it to the queue
-    conversion_queue.pending.append(converter_job)
-    logger.info('Document Conversion Job Queued')
+    if settings.is_async:
+        # get the queue
+        portal = api.portal.get()
+        conversion_queue = get_queue('collective.pdfpeek.conversion_' +
+                                     portal.id)
+        # create a converter job
+        converter_job = Job(handle_pdf, content)
+        # add it to the queue
+        conversion_queue.pending.append(converter_job)
+        logger.info('Document Conversion Job Queued')
+    else:
+        # handles conversion synchronously
+        handle_pdf(content)
+        logger.info('Document Conversion Done (synchronous)')
 
 
 def queue_image_removal(content):
@@ -48,8 +54,16 @@ def queue_image_removal(content):
     Queues the image removal if there is no longer a pdf
     file stored on the object
     """
-    portal = api.portal.get()
-    conversion_queue = get_queue('collective.pdfpeek.conversion_' + portal.id)
-    removal_job = Job(remove_image_previews, content)
-    conversion_queue.pending.append(removal_job)
-    logger.info('Document Preview Image Removal Job Queued')
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(interfaces.IPDFPeekConfiguration)
+
+    if settings.is_async:
+        portal = api.portal.get()
+        conversion_queue = get_queue('collective.pdfpeek.conversion_' +
+                                     portal.id)
+        removal_job = Job(remove_image_previews, content)
+        conversion_queue.pending.append(removal_job)
+        logger.info('Document Preview Image Removal Job Queued')
+    else:
+        remove_image_previews(content)
+        logger.info('Document Preview Image Removal Done (synchronous)')

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<registry>
+  <records interface="collective.pdfpeek.interfaces.IPDFPeekConfiguration"
+      remove="True"/>
+  <records prefix="plone.bundles/pdfpeek"
+      interface='Products.CMFPlone.interfaces.IBundleRegistry'
+      remove="True" />
+</registry>

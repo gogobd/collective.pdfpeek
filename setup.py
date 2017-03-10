@@ -59,6 +59,7 @@ setup(
             'Products.ATContentTypes',
             'msgpack-python',
             'plone.app.contenttypes',
+            'plone.app.robotframework[debug]',
             'plone.app.testing',
         ],
     },

@@ -2,6 +2,7 @@
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.testing import Layer
 
@@ -22,6 +23,7 @@ class SampleDataLayer(Layer):
                 self['pdf_files'].append(
                     os.path.join(SAMPLE_DATA_DIRECTORY, f))
 
+
 PDFPEEK_SAMPLEDATA_FIXTURE = SampleDataLayer()
 
 
@@ -34,26 +36,28 @@ class PDFPeekATLayer(PloneSandboxLayer):
         self.loadZCML(package=collective.pdfpeek)
 
     def setUpPloneSite(self, portal):
-        self.applyProfile(portal, 'collective.pdfpeek:default')
+        # ATContentTypes are not installed by default on Plone5+
+        pqi = portal.portal_quickinstaller
+        if not pqi.isProductInstalled('Products.ATContentTypes'):
+            self.applyProfile(portal, 'Products.ATContentTypes:default')
+        self.applyProfile(portal, 'collective.pdfpeek.at:at')
+
 
 PDFPEEK_AT_FIXTURE = PDFPeekATLayer()
 
 
 class PDFPeekDXLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE, )
+    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        import plone.app.contenttypes
-        self.loadZCML(package=plone.app.contenttypes)
 
         import collective.pdfpeek
         self.loadZCML(package=collective.pdfpeek)
 
     def setUpPloneSite(self, portal):
-        self.applyProfile(portal, 'plone.app.contenttypes:default')
-        self.applyProfile(portal, 'collective.pdfpeek:default')
         self.applyProfile(portal, 'collective.pdfpeek.dx:dx')
+
 
 PDFPEEK_DX_FIXTURE = PDFPeekDXLayer()
 

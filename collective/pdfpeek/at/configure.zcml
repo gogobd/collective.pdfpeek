@@ -49,7 +49,7 @@
 
     <genericsetup:registerProfile
         name="at"
-        title="collective.pdfpeek.at"
+        title="PDFPeek for Archetypes"
         directory="profiles/default"
         description="Installs the Archetypes adapters and event handlers."
         provides="Products.GenericSetup.interfaces.EXTENSION"

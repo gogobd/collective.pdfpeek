@@ -1,13 +1,14 @@
 language: python
 python: 2.7
 env:
-  - PLONE_VERSION=4.2
   - PLONE_VERSION=4.3 QA=true
   - PLONE_VERSION=5.0
+  - PLONE_VERSION=5.1
 matrix:
   allow_failures:
-    - env: PLONE_VERSION=4.2
+    - env: PLONE_VERSION=4.3
     - env: PLONE_VERSION=5.0
+    - env: PLONE_VERSION=5.1
 before_install:
   - sudo apt-get install -y libjpeg-dev libgif-dev libpng-dev libz-dev ghostscript
   - mkdir -p buildout-cache/downloads

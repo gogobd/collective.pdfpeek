@@ -5,6 +5,8 @@ from zc.lockfile import LockError
 from zc.lockfile import LockFile
 from zope.interface import Interface
 
+from plone.protect.authenticator import createToken
+
 import logging
 import os
 import tempfile
@@ -29,6 +31,9 @@ class pdfpeekUtilView(BrowserView):
     def process_conversion_queue(self):
         """process the queue.
         """
+        token = createToken()
+        self.request.set('_authenticator', token)
+
         try:
             lock = LockFile(LOCKFILE_NAME)
         except LockError:

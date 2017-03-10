@@ -1,24 +1,53 @@
 <configure
+    xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="genericsetup">
+
   <genericsetup:registerProfile
-     name="default"
-     title="PDFpeek"
-     directory="profiles/default"
-     description="Thumbnail Image Previews of PDF files."
-     provides="Products.GenericSetup.interfaces.EXTENSION"
-     />
+      name="default"
+      title="PDFpeek"
+      directory="profiles/default"
+      description="Thumbnail Image Previews of PDF files."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      zcml:condition="not-have plone-5"
+      name="plone"
+      title="PDFpeek"
+      directory="profiles/plone4"
+      description="Thumbnail Image Previews of PDF files."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      zcml:condition="have plone-5"
+      name="plone"
+      title="PDFpeek"
+      directory="profiles/plone5"
+      description="Thumbnail Image Previews of PDF files."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <genericsetup:importStep
       name="collective.pdfpeek-various"
       title="PDFpeek Import Step"
       description="Import steps for collective.pdfpeek"
-      handler="collective.pdfpeek.setuphandlers.importVarious">
-  </genericsetup:importStep>
+      handler="collective.pdfpeek.setuphandlers.importVarious"
+      />
+
   <genericsetup:registerProfile
-     name="uninstall"
-     title="Uninstall PDFpeek"
-     directory="profiles/uninstall"
-     description="Uninstall Thumbnail Image Previews of PDF files."
-     provides="Products.GenericSetup.interfaces.EXTENSION"
-     />
+      name="uninstall"
+      title="PDFpeek uninstall"
+      directory="profiles/uninstall"
+      description="Uninstall Thumbnail Image Previews of PDF files."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="collective.pdfpeek-hiddenprofiles"
+      />
+
 </configure>

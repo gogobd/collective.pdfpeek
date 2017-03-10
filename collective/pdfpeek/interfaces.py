@@ -76,3 +76,11 @@ class IPDFPeekConfiguration(Interface):
         default=0,
         required=True,
     )
+
+    is_async = schema.Bool(
+        title=_(u'Asynchronous handling'),
+        description=_(
+            u'Generate PDF Previews asynchronously.'),
+        required=True,
+        default=True
+    )
