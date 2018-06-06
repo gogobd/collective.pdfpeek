@@ -7,7 +7,7 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
-from unittest2 import TestCase
+from unittest import TestCase
 
 
 class TestATDataExtraction(TestCase):
