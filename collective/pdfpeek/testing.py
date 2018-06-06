@@ -14,36 +14,45 @@ SAMPLE_DATA_DIRECTORY = \
 
 
 class SampleDataLayer(Layer):
+    """Fix other people's missing docstrings."""
 
     def setUp(self):
+        """Fix other people's missing docstrings."""
         self['pdf_files'] = []
         for f in os.listdir(SAMPLE_DATA_DIRECTORY):
             if fnmatch.fnmatch(f, '*.pdf'):
                 self['pdf_files'].append(
                     os.path.join(SAMPLE_DATA_DIRECTORY, f))
 
+
 PDFPEEK_SAMPLEDATA_FIXTURE = SampleDataLayer()
 
 
 class PDFPeekATLayer(PloneSandboxLayer):
+    """Fix other people's missing docstrings."""
 
     defaultBases = (PLONE_FIXTURE, )
 
     def setUpZope(self, app, configurationContext):
+        """Fix other people's missing docstrings."""
         import collective.pdfpeek
         self.loadZCML(package=collective.pdfpeek)
 
     def setUpPloneSite(self, portal):
+        """Fix other people's missing docstrings."""
         self.applyProfile(portal, 'collective.pdfpeek:default')
+
 
 PDFPEEK_AT_FIXTURE = PDFPeekATLayer()
 
 
 class PDFPeekDXLayer(PloneSandboxLayer):
+    """Fix other people's missing docstrings."""
 
     defaultBases = (PLONE_FIXTURE, )
 
     def setUpZope(self, app, configurationContext):
+        """Fix other people's missing docstrings."""
         import plone.app.contenttypes
         self.loadZCML(package=plone.app.contenttypes)
 
@@ -51,9 +60,11 @@ class PDFPeekDXLayer(PloneSandboxLayer):
         self.loadZCML(package=collective.pdfpeek)
 
     def setUpPloneSite(self, portal):
+        """Fix other people's missing docstrings."""
         self.applyProfile(portal, 'plone.app.contenttypes:default')
         self.applyProfile(portal, 'collective.pdfpeek:default')
         self.applyProfile(portal, 'collective.pdfpeek.dx:dx')
+
 
 PDFPEEK_DX_FIXTURE = PDFPeekDXLayer()
 
