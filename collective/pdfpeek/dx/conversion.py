@@ -15,7 +15,7 @@ class DexterityPDFExtractor(AbstractPDFExtractor):
     def content_type(self):
         try:
             return IPrimaryFieldInfo(self.context).value.contentType
-        except (TypeError, AssertionError):
+        except (TypeError, AssertionError, AttributeError):
             pass
 
     @property
