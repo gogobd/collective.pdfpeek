@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+"""Fix other people's missing docstrings."""
+
 from ZODB.POSException import ConflictError
 from zope import component
 from zope import interface
@@ -12,18 +14,24 @@ logger = logging.getLogger('collective.pdfpeek.async')
 
 
 class IQueue(interface.Interface):
+    """Fix other people's missing docstrings."""
+
     pass
 
 
 class Queue(persistent.Persistent):
+    """Fix other people's missing docstrings."""
+
     interface.implements(IQueue)
 
     def __init__(self):
+        """Fix other people's missing docstrings."""
         self.pending = persistent.list.PersistentList()
         self.failures = persistent.list.PersistentList()
         self.finished = persistent.list.PersistentList()
 
     def process(self):
+        """Fix other people's missing docstrings."""
         num = len(self.pending)
         if num > 0:
             job = self.pending[0]
@@ -32,7 +40,7 @@ class Queue(persistent.Persistent):
             except (ConflictError, KeyboardInterrupt):
                 # Let Zope handle this.
                 raise
-            except:
+            except Exception:
                 logger.warn(
                     'Removing job {0:s} after Exception:'.format(job),
                     exc_info=1
@@ -47,24 +55,30 @@ class Queue(persistent.Persistent):
 
 
 class Job(persistent.Persistent):
+    """Fix other people's missing docstrings."""
+
     executed = None
     title = u''
 
     def __init__(self, fun, *args, **kwargs):
+        """Fix other people's missing docstrings."""
         self._fun = fun
         self._args = args
         self._kwargs = kwargs
 
     def __call__(self):
+        """Fix other people's missing docstrings."""
         self.value = self._fun(*self._args, **self._kwargs)
         self.executed = datetime.datetime.now()
 
     def __str__(self):
+        """Fix other people's missing docstrings."""
         return '<Job {0:s} with args {1:s} and kwargs {2:s}>'.format(
             self._fun.__name__, self._args, self._kwargs)
 
 
 def get_queue(name):
+    """Fix other people's missing docstrings."""
     queue = component.queryUtility(IQueue, name)
     if queue is None:
         queue = Queue()
