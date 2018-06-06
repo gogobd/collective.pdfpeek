@@ -4,7 +4,7 @@
 from collective.pdfpeek import testing
 from plone.testing import layered
 import doctest
-import unittest2 as unittest
+import unittest as unittest
 
 integration_tests = [
     'integration.txt'
