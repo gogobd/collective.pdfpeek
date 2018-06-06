@@ -29,8 +29,7 @@ mm = cm * 0.1
 
 @implementer(IPDFDataExtractor)
 class AbstractPDFExtractor:
-    """Convert PDF in plone.app.contenttypes files
-    """
+    """Convert PDF in plone.app.contenttypes files."""
 
     __metaclass__ = ABCMeta
 
@@ -45,24 +44,29 @@ class AbstractPDFExtractor:
     img_preview_progressive = False
 
     def __init__(self, context):
+        """Fix other peoples missing docstrings."""
         self.context = context
 
     @property
     def errmsg(self):
+        """Fix other peoples missing docstrings."""
         return 'Failed to convert PDF to images with PDFPeek on {context.id}.'\
             .format(context=self.context)
 
     @property
     def successmsg(self):
+        """Fix other peoples missing docstrings."""
         return 'Converted PDF to images with PDFPeek on {context.id}.'\
             .format(context=self.context)
 
     @property
     def content_type(self):
+        """Fix other peoples missing docstrings."""
         raise NotImplementedError
 
     @property
     def data(self):
+        """Fix other peoples missing docstrings."""
         raise NotImplementedError
 
     def _fixPdf(self, string):
@@ -75,17 +79,18 @@ class AbstractPDFExtractor:
 
     @property
     def pdf(self):
+        """Fix other peoples missing docstrings."""
         pdf = None
         try:
             pdf = PdfFileReader(StringIO(self.data))
-        except:
+        except Exception:
             logger.warn('Error opening pdf file, trying to fix it...')
             fixed_data = self._fixPdf(self.data)
 
             # try to reopen the pdf file again
             try:
                 pdf = PdfFileReader(StringIO(fixed_data))
-            except:
+            except Exception:
                 logger.warn('This pdf file cannot be fixed.')
 
         if pdf and pdf.isEncrypted:
@@ -93,7 +98,7 @@ class AbstractPDFExtractor:
                 decrypt = pdf.decrypt('')
                 if decrypt == 0:
                     logger.warn('This pdf is password protected.')
-            except:
+            except Exception:
                 logger.warn('Errors while decrypting the pdf file.')
 
         if pdf is None:
@@ -103,6 +108,7 @@ class AbstractPDFExtractor:
 
     @property
     def pages(self):
+        """Fix other peoples missing docstrings."""
         if self.pdf:
             if self.settings.page_limit <= 0:
                 return self.pdf.getNumPages()
@@ -113,6 +119,7 @@ class AbstractPDFExtractor:
 
     @property
     def metadata(self):
+        """Fix other peoples missing docstrings."""
         data = {}
         if self.pdf:
             try:
@@ -128,10 +135,12 @@ class AbstractPDFExtractor:
 
     @property
     def settings(self):
+        """Fix other peoples missing docstrings."""
         registry = getUtility(IRegistry)
         return registry.forInterface(IPDFPeekConfiguration)
 
     def get_thumbnails(self, page_start=0, pages=1):
+        """Fix other peoples missing docstrings."""
         thumb_size = (self.settings.thumbnail_width,
                       self.settings.thumbnail_length)
         preview_size = (self.settings.preview_width,
@@ -194,6 +203,8 @@ class AbstractPDFExtractor:
 
     def ghostscript_transform(self, page_num):
         """
+        Generate image from PDF Page.
+
         ghostscript_transform takes an AT based object with an IPDF interface
         and a page number argument and converts that page number of the pdf
         file to a png image file.
@@ -237,6 +248,7 @@ class AbstractPDFExtractor:
         return image_result
 
     def __call__(self):
+        """Fix other peoples missing docstrings."""
         if self.pdf:
             alsoProvides(self.context, IPDF)
             alsoProvides(self.context, IAttributeAnnotatable)
@@ -258,10 +270,7 @@ class AbstractPDFExtractor:
 
 
 def remove_image_previews(content):
-    """
-    This function removes the image preview annotations if a pdf file is
-    removed
-    """
+    """Remove the image preview annotations if a pdf file is removed."""
     # a file was uploaded that is not a PDF
     # remove the pdf file
     content.filepreview = None
